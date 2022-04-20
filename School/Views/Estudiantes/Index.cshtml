@@ -1,0 +1,70 @@
+@model List<Person>
+
+@section Styles {
+
+}
+
+@section Scripts {
+    <script type="text/javascript">        
+        $(document).ready(function() { 
+             App.Page.Customers.List.OnLoad();
+        });      
+    </script>
+}
+
+<br />
+<div class="row">
+    <div class="col">
+        <h1>Listado de estudiantes</h1>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <table id="estudiantes" class="table table-striped">
+            <thead>
+                <tr>
+                    <th><b>ID de Estudiante</b></th>
+                    <th><b>Nombre</b></th>
+                    <th><b>Apellidos</b></th>
+                    <th><b>Fecha de entrada</b></th>
+                    <th><b> </b></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                @if (item.EnrollmentDate != null)
+                {
+                    <tr>
+                    <td> 
+                       @item.PersonID                      
+                    </td>
+                    <td>@item.FirstName</td>
+                    <td>
+                        @item.LastName <br />
+                    </td>
+                    <td>
+                        @(item.EnrollmentDate.GetValueOrDefault().ToShortDateString()) <br />
+                    </td>
+                    <td>
+                    <a  class="btn btn-info btn-sm"
+                        data-ajax="true"
+                        data-ajax-method="post"
+                        data-ajax-update="#modalbody"
+                        data-ajax-mode="replace"
+                        data-ajax-begin="App.Page.Orders.Detail.OnBegin()"
+                        data-ajax-success="App.Page.Orders.Detail.OnSuccess('@item.PersonID')"
+                        data-ajax-failure="App.Page.Orders.Detail.OnFailure()"
+                        data-ajax-complete="App.Page.Orders.Detail.OnComplete()"
+                        asp-controller = "estudiantes"
+                        asp-action = "ficha"
+                        asp-route-id ="@item.PersonID">+</a>
+                    </td>
+                </tr>
+                }
+            }                
+            </tbody>
+        </table>
+    </div>
+</div>
